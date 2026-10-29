@@ -8,3 +8,5 @@
 .topbar-title{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .topbar-title .status-dot{margin-right:0}
 .official-badge{display:inline-block;padding:5px 8px;border-radius:999px;background:var(--lime);color:#26330d;font-size:9px;font-weight:900;letter-spacing:1px}
+.manual-complete{display:block;margin:12px auto 0;border:1px solid var(--green);background:#eaf8ef;color:var(--green-dark);padding:12px 16px;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
+.manual-note{max-width:520px;margin:10px auto 0;color:var(--muted);font-size:12px;line-height:1.5}
