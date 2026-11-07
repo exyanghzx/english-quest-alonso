@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="English Quest de Alonso: ruta autodidacta de inglés para principiantes con lecciones, práctica y progreso local.">
-  <title>English Quest de Alonso — Versión oficial</title>
+  <meta name="description" content="English Quest de Alonso: curso personal de inglés desde Pre-A1 con fundamentos, práctica comunicativa y progreso local.">
+  <title>English Quest de Alonso — Curso oficial</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,26 +12,26 @@
     <aside class="sidebar" aria-label="Navegación principal">
       <a class="brand" href="#inicio" data-view="inicio" aria-label="English Quest, inicio">
         <span class="brand-mark">EQ</span>
-        <span><strong>English Quest</strong><small>Versión oficial de Alonso</small></span>
+        <span><strong>English Quest</strong><small>Curso personal de Alonso</small></span>
       </a>
       <nav>
         <button class="nav-item active" data-view="inicio"><span>⌂</span> Inicio</button>
-        <button class="nav-item" data-view="ruta"><span>◇</span> Mi ruta</button>
+        <button class="nav-item" data-view="ruta"><span>◇</span> Ruta completa</button>
         <button class="nav-item" data-view="practica"><span>✦</span> Practicar</button>
         <button class="nav-item" data-view="recursos"><span>↗</span> Recursos</button>
       </nav>
       <div class="sidebar-card">
         <span class="eyebrow">OBJETIVO ACTUAL</span>
-        <strong>Módulo 1 · Presentarme</strong>
+        <strong>Base 0 · Números y <em>to be</em></strong>
         <div class="progress-track"><span id="sidebar-progress"></span></div>
-        <small><span id="sidebar-percent">0</span>% completado de este módulo</small>
+        <small><span id="sidebar-percent">0</span>% de esta base · no de todo A1</small>
       </div>
     </aside>
 
     <main>
       <header class="topbar">
         <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menú">☰</button>
-        <div class="topbar-title"><span class="status-dot"></span> Plan para principiante · A1 <span class="official-badge">OFICIAL · ACTUAL</span></div>
+        <div class="topbar-title"><span class="status-dot"></span> Pre-A1 · Base absoluta <span class="official-badge">OFICIAL · RUTA 2.0</span></div>
         <div class="stats" aria-label="Estadísticas">
           <span title="Racha"><b>🔥</b> <strong id="streak">1</strong></span>
           <span title="Puntos de experiencia"><b>⚡</b> <strong id="xp">0</strong> XP</span>
@@ -40,60 +40,55 @@
       </header>
 
       <section class="view active" id="inicio">
-        <div class="hero">
+        <div class="hero foundation-hero">
           <div class="hero-copy">
-            <span class="pill">DÍA 1 · FUNDAMENTOS</span>
-            <h1>Hoy empiezas a<br><em>hablar inglés.</em></h1>
-            <p>No necesitas aprender todas las reglas. Hoy solo necesitas poder saludar, presentarte y comprender cinco frases esenciales.</p>
-            <button class="primary" data-start-lesson>Comenzar lección <span>→</span></button>
+            <span class="pill">NUEVO PUNTO DE PARTIDA · PRE-A1</span>
+            <h1>Primero construimos<br><em>una base real.</em></h1>
+            <p>Ya sabes presentarte, pero todavía faltan piezas importantes. Ahora aprenderás números, pronombres y <strong>am / is / are</strong> con explicaciones en español, audio, ejercicios y una conversación corta.</p>
+            <button class="primary" data-start-foundation>Empezar Base 0 <span>→</span></button>
           </div>
           <div class="hero-visual" aria-hidden="true">
-            <div class="word-card card-one"><small>HELLO</small><strong>Hola</strong></div>
-            <div class="word-card card-two"><small>I AM</small><strong>Yo soy</strong></div>
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
-            <div class="speech-bubble">Hi! <span>👋</span></div>
+            <div class="word-card card-one"><small>TO BE</small><strong>am · is · are</strong></div>
+            <div class="word-card card-two"><small>NUMBER</small><strong>twenty-one</strong></div>
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="speech-bubble">I am 21 <span>✓</span></div>
           </div>
         </div>
 
+        <div class="truth-card">
+          <b>Tu diagnóstico honesto</b>
+          <p>No partes desde cero total: reconoces saludos y puedes decir cuatro frases personales. Pero aún eres <strong>Pre-A1</strong> porque necesitas construir y entender frases nuevas sin copiarlas. Eso es exactamente lo que entrenaremos.</p>
+        </div>
+
         <div class="method-strip">
-          <span>1 · Comprende</span><b>→</b><span>2 · Escucha</span><b>→</b><span>3 · Recuerda</span><b>→</b><span>4 · Usa</span><b>→</b><span>5 · Repasa</span>
+          <span>1 · Entiende la regla</span><b>→</b><span>2 · Aprende palabras</span><b>→</b><span>3 · Escucha</span><b>→</b><span>4 · Recupera</span><b>→</b><span>5 · Misión Xiaoma</span>
         </div>
         <div class="section-heading">
-          <div><span class="eyebrow">TU SESIÓN DE HOY</span><h2>Una misión, cuatro pasos</h2></div>
-          <span class="time-badge">⏱ 25–35 min</span>
+          <div><span class="eyebrow">SESIÓN RECOMENDADA</span><h2>Base 0: cuatro bloques conectados</h2></div>
+          <span class="time-badge">⏱ 30–40 min</span>
         </div>
         <div class="mission-grid">
-          <article class="mission-card current">
-            <span class="step">01</span><div class="mission-icon">Aa</div>
-            <h3>Palabras y sonidos</h3><p>Ocho bloques útiles con significado y audio.</p>
-            <button data-start-lesson>Empezar</button>
-          </article>
-          <article class="mission-card">
-            <span class="step">02</span><div class="mission-icon">≡</div>
-            <h3>Construye una frase</h3><p>Combina los bloques para hablar de ti.</p>
-            <button data-start-lesson>Aprender</button>
-          </article>
-          <article class="mission-card">
-            <span class="step">03</span><div class="mission-icon">▶</div>
-            <h3>Escucha en contexto</h3><p>Reconoce las mismas palabras en un diálogo.</p>
-            <button data-start-lesson>Escuchar</button>
-          </article>
-          <article class="mission-card">
-            <span class="step">04</span><div class="mission-icon">◇</div>
-            <h3>Recuerda sin mirar</h3><p>Juega, habla y recupera lo aprendido.</p>
-            <button data-game="quiz">Practicar</button>
-          </article>
+          <article class="mission-card current"><span class="step">01</span><div class="mission-icon">10</div><h3>Números 0–20</h3><p>Reconocer, escuchar y usar edad, cantidad y teléfono.</p><button data-start-foundation>Aprender</button></article>
+          <article class="mission-card"><span class="step">02</span><div class="mission-icon">I</div><h3>Pronombres</h3><p>I, you, he, she, it, we y they: quién realiza la acción.</p><button data-start-foundation>Aprender</button></article>
+          <article class="mission-card"><span class="step">03</span><div class="mission-icon">be</div><h3>Verbo <em>to be</em></h3><p>Am, is y are en afirmación, negación y pregunta.</p><button data-start-foundation>Aprender</button></article>
+          <article class="mission-card xiaoma-card"><span class="step">04</span><div class="mission-icon">⚡</div><h3>Modo Xiaoma</h3><p>Usa la base en una mini conversación sin leer.</p><button data-game="xiaoma">Ver misión</button></article>
         </div>
       </section>
 
       <section class="view" id="ruta">
-        <div class="page-intro"><span class="eyebrow">DE CERO A A1</span><h1>Tu ruta de aprendizaje</h1><p>Avanza por habilidades reales, no por reglas sueltas. Cada unidad termina con una misión que puedes hacer en la vida real.</p></div>
+        <div class="page-intro"><span class="eyebrow">PRE-A1 → A1</span><h1>Ahora sí: tu mapa completo</h1><p>No aprenderás reglas sueltas ni solo frases memorizadas. Cada unidad combina gramática, vocabulario, pronunciación, escucha, lectura, escritura y conversación.</p></div>
+        <div class="curriculum-legend"><span><b>Base</b> explicación clara</span><span><b>Input</b> escuchar y leer</span><span><b>Práctica</b> recordar y construir</span><span><b>Xiaoma</b> usarlo hablando</span><span><b>Repaso</b> volver en días 1, 3, 7 y 14</span></div>
         <div class="path">
-          <article class="path-unit available"><span class="unit-number">01</span><div><small>UNIDAD ACTUAL</small><h3>Yo y mi mundo</h3><p>Saludos, nombre, edad, país, gustos y necesidades.</p><div class="tags"><span>Presentarte</span><span>Verb to be</span><span>20 palabras</span></div></div><button data-start-lesson>Continuar →</button></article>
-          <article class="path-unit locked"><span class="unit-number">02</span><div><small>SIGUIENTE</small><h3>Mi día</h3><p>Rutinas, horarios, días de la semana y presente simple.</p></div><span class="lock">🔒</span></article>
-          <article class="path-unit locked"><span class="unit-number">03</span><div><small>PRÓXIMAMENTE</small><h3>Personas y lugares</h3><p>Familia, descripciones, casa y direcciones.</p></div><span class="lock">🔒</span></article>
-          <article class="path-unit locked"><span class="unit-number">04</span><div><small>PRÓXIMAMENTE</small><h3>Comida y compras</h3><p>Pedir, pagar, cantidades y preferencias.</p></div><span class="lock">🔒</span></article>
+          <article class="path-unit available"><span class="unit-number">00</span><div><small>AHORA · PRE-A1</small><h3>Base absoluta</h3><p>Números 0–20, pronombres, <em>to be</em>, contracciones y preguntas personales.</p><div class="tags"><span>4 lecciones</span><span>am / is / are</span><span>Misión: presentarte</span></div></div><button data-start-foundation>Empezar →</button></article>
+          <article class="path-unit planned"><span class="unit-number">01</span><div><small>A1 · YO</small><h3>Información personal</h3><p>Alfabeto para deletrear, países, nacionalidades, profesiones, edad y datos de contacto.</p><div class="tags"><span>What / Where / How</span><span>a / an</span><span>plural -s</span></div></div><span class="plan-status">Después</span></article>
+          <article class="path-unit planned"><span class="unit-number">02</span><div><small>A1 · MI DÍA</small><h3>Rutinas y presente simple</h3><p>Verbos frecuentes, horarios, días, frecuencia y preguntas con <em>do / does</em>.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">03</span><div><small>A1 · PERSONAS</small><h3>Familia y descripciones</h3><p><em>Have / has</em>, posesivos, apariencia, personalidad y relaciones.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">04</span><div><small>A1 · CASA</small><h3>Objetos y lugares</h3><p><em>There is / are</em>, preposiciones de lugar, habitaciones y objetos cotidianos.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">05</span><div><small>A1 · CAPACIDADES</small><h3>Puedo y no puedo</h3><p><em>Can / can’t</em>, habilidades, solicitudes sencillas y pronunciación.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">06</span><div><small>A1 · COMIDA</small><h3>Comer y comprar</h3><p>Contables, <em>some / any</em>, cantidades, precios y pedidos.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">07</span><div><small>A1 · CIUDAD</small><h3>Direcciones y transporte</h3><p>Lugares, imperativos, <em>where</em>, indicaciones y situaciones reales.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">08</span><div><small>A1 · TIEMPO</small><h3>Fechas, clima y planes</h3><p>Números hasta 100, horas, meses, clima y expresiones frecuentes.</p></div><span class="plan-status">Planificado</span></article>
+          <article class="path-unit planned"><span class="unit-number">09</span><div><small>EVALUACIÓN A1</small><h3>Misión final sin guion</h3><p>Escuchar, leer, escribir y mantener varias conversaciones sencillas con respuestas inesperadas.</p></div><span class="plan-status">Meta</span></article>
         </div>
       </section>
 
@@ -101,71 +96,73 @@
         <button class="text-button" data-view="inicio">← Volver al inicio</button>
         <div class="lesson-layout">
           <div class="lesson-main">
-            <span class="pill">LECCIÓN 1</span><h1>Hello! Soy yo.</h1><p class="lead">Primero comprende bloques pequeños; después escúchalos, combínalos y úsalos con tu información.</p>
-            <div class="lesson-sequence"><span class="active">1 Palabras</span><span>2 Frases</span><span>3 Diálogo</span><span>4 Práctica</span></div>
-            <h2>1. Aprende bloques útiles</h2>
-            <p class="lesson-note">No memorices palabras al azar. Aprende unidades pequeñas que puedas combinar y usar hoy.</p>
-            <div class="vocab-grid">
-              <button class="vocab-card" data-say="Hello"><span>🔊</span><b>Hello</b><small>Hola</small></button>
-              <button class="vocab-card" data-say="My name is"><span>🔊</span><b>My name is</b><small>Me llamo</small></button>
-              <button class="vocab-card" data-say="I am"><span>🔊</span><b>I am</b><small>Yo soy / estoy</small></button>
-              <button class="vocab-card" data-say="From"><span>🔊</span><b>From</b><small>De / desde</small></button>
-              <button class="vocab-card" data-say="I like"><span>🔊</span><b>I like</b><small>Me gusta</small></button>
-              <button class="vocab-card" data-say="Games"><span>🔊</span><b>Games</b><small>Juegos</small></button>
-              <button class="vocab-card" data-say="Thank you"><span>🔊</span><b>Thank you</b><small>Gracias</small></button>
-              <button class="vocab-card" data-say="Nice to meet you"><span>🔊</span><b>Nice to meet you</b><small>Mucho gusto</small></button>
+            <span class="pill">BASE 0 · LECCIÓN FUNDAMENTAL</span><h1>Números + verbo <em>to be</em></h1>
+            <p class="lead">Hoy no vas a memorizar una tabla aislada. Entenderás qué significa, escucharás ejemplos y la usarás para construir información real.</p>
+            <div class="lesson-sequence"><span class="active">1 Números</span><span>2 Pronombres</span><span>3 To be</span><span>4 Misión</span></div>
+
+            <h2>1. Números del 0 al 20</h2>
+            <p class="lesson-note">Pulsa cada número para escucharlo. Practica primero 0–10; después 11–20. El 21 se escribe <strong>twenty-one</strong>, con guion.</p>
+            <div class="number-grid" id="number-grid"></div>
+            <div class="tip"><b>No necesitas contar hasta mil hoy</b><p>Aprende los números que puedas usar inmediatamente: tu edad, una cantidad y parte de tu número telefónico. Los demás se incorporan progresivamente.</p></div>
+
+            <h2>2. Pronombres personales</h2>
+            <p class="lesson-note">Un pronombre sustituye el nombre de una persona o cosa. En inglés casi siempre debemos decir quién es el sujeto.</p>
+            <div class="pronoun-grid">
+              <button data-say="I"><b>I</b><small>yo</small></button><button data-say="you"><b>You</b><small>tú / ustedes</small></button><button data-say="he"><b>He</b><small>él</small></button><button data-say="she"><b>She</b><small>ella</small></button><button data-say="it"><b>It</b><small>eso / animal / cosa</small></button><button data-say="we"><b>We</b><small>nosotros</small></button><button data-say="they"><b>They</b><small>ellos / ellas</small></button>
             </div>
-            <div class="tip"><b>Cómo estudiarlas</b><p>Escucha cada bloque dos veces. Después tapa la traducción e intenta recordar el significado. Mañana aparecerán otra vez.</p></div>
-            <h2>2. Combina los bloques</h2>
-            <div class="phrase-list">
-              <button data-say="Hello!">🔊 <span><b>Hello!</b><small>¡Hola!</small></span></button>
-              <button data-say="My name is Alonso.">🔊 <span><b>My name is Alonso.</b><small>Me llamo Alonso.</small></span></button>
-              <button data-say="I am 21 years old.">🔊 <span><b>I am 21 years old.</b><small>Tengo 21 años.</small></span></button>
-              <button data-say="I am from Peru.">🔊 <span><b>I am from Peru.</b><small>Soy de Perú.</small></span></button>
-              <button data-say="I like games.">🔊 <span><b>I like games.</b><small>Me gustan los juegos.</small></span></button>
+
+            <h2>3. ¿Qué es el verbo <em>to be</em>?</h2>
+            <p class="lesson-note"><em>To be</em> significa principalmente <strong>ser o estar</strong>. En presente cambia según la persona:</p>
+            <div class="grammar-table" role="table" aria-label="Verbo to be en presente">
+              <div class="grammar-head">Persona</div><div class="grammar-head">Forma</div><div class="grammar-head">Contracción</div><div class="grammar-head">Ejemplo</div>
+              <div>I</div><div><b>am</b></div><div>I’m</div><button data-say="I am Alonso.">I am Alonso.</button>
+              <div>you / we / they</div><div><b>are</b></div><div>you’re / we’re / they’re</div><button data-say="You are my friend.">You are my friend.</button>
+              <div>he / she / it</div><div><b>is</b></div><div>he’s / she’s / it’s</div><button data-say="She is from Peru.">She is from Peru.</button>
             </div>
-            <h2 class="dialogue-title">3. Escúchalas en contexto</h2>
+            <div class="formula-box"><span>Afirmación</span><strong>I am 21 years old.</strong><small>Sujeto + am/is/are + información</small></div>
+            <div class="formula-box negative"><span>Negación</span><strong>I am not tired.</strong><small>Sujeto + am/is/are + not + información</small></div>
+            <div class="formula-box question"><span>Pregunta</span><strong>Are you 21 years old?</strong><small>Am/Is/Are + sujeto + información?</small></div>
+            <div class="tip"><b>Español: “Tengo 21 años” · Inglés: “I am 21 years old”</b><p>No traducimos palabra por palabra. En inglés la edad se expresa con <em>to be</em>.</p></div>
+
+            <h2>4. Escucha la base en contexto</h2>
             <div class="dialogue">
-              <div class="person">A</div><div class="line"><button class="audio" data-say="Hello! My name is Alex.">🔊</button><div><strong>Hello! My name is Alex.</strong><small>¡Hola! Me llamo Alex.</small></div></div>
-              <div class="person alt">B</div><div class="line"><button class="audio" data-say="Hi, Alex. My name is Sam. Nice to meet you.">🔊</button><div><strong>Hi, Alex. My name is Sam. Nice to meet you.</strong><small>Hola, Alex. Me llamo Sam. Mucho gusto.</small></div></div>
-              <div class="person">A</div><div class="line"><button class="audio" data-say="Nice to meet you too. How are you?">🔊</button><div><strong>Nice to meet you too. How are you?</strong><small>Igualmente. ¿Cómo estás?</small></div></div>
-              <div class="person alt">B</div><div class="line"><button class="audio" data-say="I am fine, thank you.">🔊</button><div><strong>I am fine, thank you.</strong><small>Estoy bien, gracias.</small></div></div>
+              <div class="person">A</div><div class="line"><button class="audio" data-say="Hi! I am Maya. What is your name?">🔊</button><div><strong>Hi! I’m Maya. What’s your name?</strong><small>Hola. Soy Maya. ¿Cómo te llamas?</small></div></div>
+              <div class="person alt">B</div><div class="line"><button class="audio" data-say="I am Alonso. I am from Peru.">🔊</button><div><strong>I’m Alonso. I’m from Peru.</strong><small>Soy Alonso. Soy de Perú.</small></div></div>
+              <div class="person">A</div><div class="line"><button class="audio" data-say="Are you twenty-one years old?">🔊</button><div><strong>Are you twenty-one years old?</strong><small>¿Tienes veintiún años?</small></div></div>
+              <div class="person alt">B</div><div class="line"><button class="audio" data-say="Yes, I am.">🔊</button><div><strong>Yes, I am.</strong><small>Sí.</small></div></div>
             </div>
-            <div class="tip"><b>Idea clave</b><p>En inglés decimos <strong>I am 21 years old</strong>, no “I have 21 years”. La edad se expresa con el verbo <em>to be</em>.</p></div>
-            <button class="primary wide" id="finish-lesson">Entendí la lección · Practicar →</button>
+            <button class="primary wide" id="finish-lesson">Entendí la explicación · Practicar →</button>
           </div>
           <aside class="lesson-aside">
-            <span class="eyebrow">MÉTODO</span><h3>Escucha → imita → usa</h3><p>No leas solamente. El cerebro necesita relacionar sonido, significado y uso.</p>
-            <div class="checklist"><label><input type="checkbox"> Escuché todo</label><label><input type="checkbox"> Repetí en voz alta</label><label><input type="checkbox"> Dije mis propios datos</label></div>
+            <span class="eyebrow">REGLA DE ESTA RUTA</span><h3>Entender y usar</h3><p>Una lección no se completa solo por verla. Debes reconocer, construir y usar la estructura sin copiar.</p>
+            <div class="checklist"><label><input type="checkbox"> Escuché los números</label><label><input type="checkbox"> Entendí am / is / are</label><label><input type="checkbox"> Leí el diálogo</label></div>
           </aside>
         </div>
       </section>
 
       <section class="view" id="practica">
-        <div class="page-intro"><span class="eyebrow">LABORATORIO DE PRÁCTICA</span><h1>Aprende jugando</h1><p>Equivocarte aquí forma parte del entrenamiento. Cada respuesta correcta suma experiencia.</p></div>
+        <div class="page-intro"><span class="eyebrow">PRÁCTICA DE LA BASE 0</span><h1>Demuestra que lo entiendes</h1><p>Primero reconocimiento; después construcción; al final, conversación sin leer.</p></div>
         <div class="game-picker" role="tablist">
-          <button class="active" data-game="quiz">⚡ Traducción rápida</button>
-          <button data-game="order">≡ Ordena la frase</button>
-          <button data-game="match">◇ Empareja</button>
-          <button data-game="speak">◉ Pronunciación</button>
+          <button class="active" data-game="numbers">10 Números</button>
+          <button data-game="tobe">am · is · are</button>
+          <button data-game="order">≡ Construye</button>
+          <button data-game="xiaoma">⚡ Modo Xiaoma</button>
+          <button data-game="review">↻ Repaso anterior</button>
         </div>
         <div id="game-area" class="game-area" aria-live="polite"></div>
       </section>
 
       <section class="view" id="recursos">
-        <div class="page-intro"><span class="eyebrow">BIBLIOTECA CURADA</span><h1>Pocos recursos, bien usados</h1><p>No necesitas cien aplicaciones. Usa estos materiales como complemento de la ruta y vuelve aquí para practicar.</p></div>
+        <div class="page-intro"><span class="eyebrow">MÉTODO Y FUENTES</span><h1>Una ruta, no cien aplicaciones</h1><p>English Quest organiza el estudio; estas fuentes sirven para escuchar más y contrastar explicaciones.</p></div>
         <div class="resource-grid">
-          <a href="https://beta.usalearns.org/1st-free-online-english-course" target="_blank" rel="noreferrer"><span class="resource-logo blue">US</span><div><small>CURSO COMPLEMENTARIO</small><h3>USA Learns</h3><p>Curso gratuito para principiantes adultos, organizado en 20 unidades.</p></div><b>↗</b></a>
-          <a href="https://learningenglish.voanews.com/p/5644.html" target="_blank" rel="noreferrer"><span class="resource-logo red">VOA</span><div><small>ESCUCHA</small><h3>Let’s Learn English</h3><p>Videos y diálogos lentos, diseñados por profesores.</p></div><b>↗</b></a>
-          <a href="https://www.cambridgeenglish.org/learning-english/activities-for-learners/?level=basic" target="_blank" rel="noreferrer"><span class="resource-logo yellow">C</span><div><small>PRÁCTICA A1–A2</small><h3>Cambridge English</h3><p>Actividades breves de escucha, lectura y vocabulario.</p></div><b>↗</b></a>
+          <a href="https://learnenglish.britishcouncil.org/level/understand-your-level/a1-elementary" target="_blank" rel="noreferrer"><span class="resource-logo blue">BC</span><div><small>MAPA A1</small><h3>British Council</h3><p>Habilidades, gramática y vocabulario organizados por nivel.</p></div><b>↗</b></a>
+          <a href="https://learningenglish.voanews.com/p/5644.html" target="_blank" rel="noreferrer"><span class="resource-logo red">VOA</span><div><small>ESCUCHA</small><h3>Let’s Learn English</h3><p>Videos y diálogos lentos diseñados para principiantes.</p></div><b>↗</b></a>
+          <a href="https://www.cambridgeenglish.org/learning-english/activities-for-learners/?level=basic" target="_blank" rel="noreferrer"><span class="resource-logo yellow">C</span><div><small>PRÁCTICA A1–A2</small><h3>Cambridge English</h3><p>Actividades breves por habilidad y nivel.</p></div><b>↗</b></a>
         </div>
+        <div class="research-note"><span class="eyebrow">QUÉ TOMAMOS DE LAS PLATAFORMAS</span><h2>Lo útil, sin pagar otra membresía</h2><div><p><b>Open English:</b> nivelación, lección, práctica, conversación y retroalimentación.</p><p><b>Platzi:</b> una ruta visible que separa <em>to be</em>, presente simple, verbos, fechas, pronunciación y escritura.</p><p><b>British Council:</b> preparación, idioma en contexto, comprensión y uso.</p><p><b>Xiaoma:</b> frases personales, conversación temprana y repetición; nunca como sustituto de la base.</p></div></div>
         <div class="chat-card">
-          <div><span class="eyebrow">PRACTICA CON CHATGPT</span><h2>Tu profesor siempre disponible</h2><p>Copia uno de estos mensajes y pégalo en nuestra conversación cuando termines la sesión.</p></div>
-          <div class="prompt-list">
-            <button data-copy="Actúa como mi profesor de inglés para principiantes. Practica conmigo una conversación A1 de saludos y presentaciones. Hazme una sola pregunta por turno, espera mi respuesta y corrige mis errores en español."><span>Conversación guiada</span><b>Copiar</b></button>
-            <button data-copy="Evalúa mi lección de hoy sobre saludos y presentaciones. Hazme cinco preguntas, una por turno. Al final dime qué debo repasar, sin avanzar todavía a temas más difíciles."><span>Prueba de cinco preguntas</span><b>Copiar</b></button>
-            <button data-copy="Ayúdame con pronunciación inglesa a nivel principiante. Dame una frase corta, explícame cómo colocar la boca, pídeme repetirla y dame una corrección clara."><span>Entrenamiento de pronunciación</span><b>Copiar</b></button>
-          </div>
+          <div><span class="eyebrow">CLASE CON CHATGPT</span><h2>Usa lo aprendido conmigo</h2><p>Copia el mensaje cuando termines los tres ejercicios de la Base 0.</p></div>
+          <div class="prompt-list"><button data-copy="Soy Alonso y estoy estudiando la Base 0 de English Quest: números del 0 al 20, pronombres y verbo to be. Hazme una práctica Pre-A1. Una sola pregunta por turno, primero con apoyo y luego sin pistas. Corrige en español y no avances a otro tema. Al final evalúa por separado números, am/is/are, comprensión y conversación."><span>Iniciar práctica Base 0</span><b>Copiar</b></button></div>
         </div>
       </section>
     </main>

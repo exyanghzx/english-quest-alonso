@@ -1,79 +1,281 @@
-const vocabulary=[
-  {en:'Hello',es:'Hola',sentence:'Hello! My name is Ana.'},{en:'Goodbye',es:'Adiós',sentence:'Goodbye! See you tomorrow.'},
-  {en:'Please',es:'Por favor',sentence:'Please, speak slowly.'},{en:'Thank you',es:'Gracias',sentence:'Thank you very much.'},
-  {en:'Name',es:'Nombre',sentence:'My name is Luis.'},{en:'Age',es:'Edad',sentence:'What is your age?'},
-  {en:'Country',es:'País',sentence:'Peru is my country.'},{en:'Friend',es:'Amigo',sentence:'She is my friend.'},
-  {en:'Fine',es:'Bien',sentence:'I am fine, thank you.'},{en:'Meet',es:'Conocer',sentence:'Nice to meet you.'}
+const numbers = [
+  ['0','zero'],['1','one'],['2','two'],['3','three'],['4','four'],['5','five'],['6','six'],['7','seven'],['8','eight'],['9','nine'],['10','ten'],
+  ['11','eleven'],['12','twelve'],['13','thirteen'],['14','fourteen'],['15','fifteen'],['16','sixteen'],['17','seventeen'],['18','eighteen'],['19','nineteen'],['20','twenty'],['21','twenty-one']
 ];
-const orderSentences=[
-  {words:['My','name','is','Daniel.'],translation:'Me llamo Daniel.'},
-  {words:['I','am','21','years','old.'],translation:'Tengo 21 años.'},
-  {words:['Nice','to','meet','you.'],translation:'Mucho gusto.'},
-  {words:['I','am','from','Peru.'],translation:'Soy de Perú.'},
-  {words:['I','like','music.'],translation:'Me gusta la música.'}
+
+const toBeQuestions = [
+  {sentence:'I ___ Alonso.', answer:'am', explanation:'Con I usamos am.'},
+  {sentence:'You ___ my friend.', answer:'are', explanation:'Con you usamos are.'},
+  {sentence:'She ___ from Peru.', answer:'is', explanation:'Con she usamos is.'},
+  {sentence:'He ___ twenty years old.', answer:'is', explanation:'Con he usamos is.'},
+  {sentence:'We ___ students.', answer:'are', explanation:'Con we usamos are.'},
+  {sentence:'They ___ happy.', answer:'are', explanation:'Con they usamos are.'},
+  {sentence:'It ___ a game.', answer:'is', explanation:'Con it usamos is.'},
+  {sentence:'I ___ not tired.', answer:'am', explanation:'La negación es I am not.'}
 ];
-const defaultState={xp:0,hearts:5,progress:0,streak:1,lastStudy:'',correct:0,moduleOneComplete:false};
-let state={...defaultState,...JSON.parse(localStorage.getItem('englishQuestProgress')||'{}')};
-let currentGame='quiz',quizIndex=0,quizAnswered=false,orderIndex=0,selectedWords=[],matchSelected=[];
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+const orderSentences = [
+  {words:['I','am','twenty-one','years','old.'], translation:'Tengo veintiún años.'},
+  {words:['She','is','from','Peru.'], translation:'Ella es de Perú.'},
+  {words:['Are','you','a','student?'], translation:'¿Eres estudiante?'},
+  {words:['I','am','not','tired.'], translation:'No estoy cansado.'},
+  {words:['They','are','my','friends.'], translation:'Ellos son mis amigos.'}
+];
+
+const previousVocabulary = [
+  {en:'Hello',es:'Hola'},{en:'Goodbye',es:'Adiós'},{en:'Please',es:'Por favor'},{en:'Thank you',es:'Gracias'},
+  {en:'Name',es:'Nombre'},{en:'Age',es:'Edad'},{en:'Country',es:'País'},{en:'Friend',es:'Amigo'},
+  {en:'Fine',es:'Bien'},{en:'Meet',es:'Conocer'}
+];
+
+const defaultStages = {lesson:false,numbers:false,tobe:false,order:false,xiaoma:false};
+const defaultState = {xp:0,hearts:5,streak:1,lastStudy:'',foundationStages:defaultStages,foundationComplete:false};
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem('englishQuestProgress') || '{}'); } catch (_) { saved = {}; }
+let state = {
+  ...defaultState,
+  ...saved,
+  foundationStages:{...defaultStages,...(saved.foundationStages || {})}
+};
+
+let currentGame = 'numbers';
+let queue = [];
+let gameIndex = 0;
+let answered = false;
+let selectedWords = [];
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+const shuffle = items => [...items].sort(() => Math.random() - .5);
+
+function foundationProgress(){
+  const completed = Object.values(state.foundationStages).filter(Boolean).length;
+  return completed * 20;
+}
 
 function save(){
-  const today=new Date().toISOString().slice(0,10);
-  if(state.lastStudy&&state.lastStudy!==today){
-    const prev=new Date(state.lastStudy),now=new Date(today); const days=Math.round((now-prev)/86400000);
-    state.streak=days===1?state.streak+1:1;
+  const today = new Date().toISOString().slice(0,10);
+  if(state.lastStudy && state.lastStudy !== today){
+    const days = Math.round((new Date(today) - new Date(state.lastStudy)) / 86400000);
+    state.streak = days === 1 ? state.streak + 1 : 1;
   }
-  state.lastStudy=today;localStorage.setItem('englishQuestProgress',JSON.stringify(state));renderStats();
+  state.lastStudy = today;
+  localStorage.setItem('englishQuestProgress', JSON.stringify(state));
+  renderStats();
 }
+
 function renderStats(){
-  $('#xp').textContent=state.xp;$('#hearts').textContent=state.hearts;$('#streak').textContent=state.streak;
-  $('#sidebar-progress').style.width=`${state.progress}%`;$('#sidebar-percent').textContent=state.progress;
+  const progress = foundationProgress();
+  $('#xp').textContent = state.xp;
+  $('#hearts').textContent = state.hearts;
+  $('#streak').textContent = state.streak;
+  $('#sidebar-progress').style.width = `${progress}%`;
+  $('#sidebar-percent').textContent = progress;
 }
+
+function completeStage(stage, xp){
+  if(!state.foundationStages[stage]){
+    state.foundationStages[stage] = true;
+    state.xp += xp;
+  }
+  state.foundationComplete = foundationProgress() === 100;
+  save();
+}
+
 function showView(id){
-  $$('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  $$('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
-  $('.sidebar').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});
+  $$('.view').forEach(view => view.classList.toggle('active', view.id === id));
+  $$('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.view === id));
+  $('.sidebar').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}
-function speak(text,rate=.82){speechSynthesis.cancel();const utter=new SpeechSynthesisUtterance(text);utter.lang='en-US';utter.rate=rate;speechSynthesis.speak(utter)}
-function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
-function gainXp(amount){state.xp+=amount;state.correct+=1;state.progress=Math.min(100,Math.max(state.progress,Math.round(state.correct/20*100)));save()}
 
-$$('[data-view]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();showView(el.dataset.view)}));
-$$('[data-start-lesson]').forEach(el=>el.addEventListener('click',()=>showView('leccion')));
-$$('[data-say]').forEach(el=>el.addEventListener('click',()=>speak(el.dataset.say)));
-$('#mobile-menu').addEventListener('click',()=>$('.sidebar').classList.toggle('open'));
-$('#finish-lesson').addEventListener('click',()=>{state.progress=Math.max(state.progress,15);state.xp+=20;save();showView('practica');startGame('quiz');toast('+20 XP · Lección completada')});
-$$('[data-copy]').forEach(el=>el.addEventListener('click',async()=>{await navigator.clipboard.writeText(el.dataset.copy);toast('Mensaje copiado · pégalo en ChatGPT')}));
-$$('[data-game]').forEach(el=>el.addEventListener('click',()=>{showView('practica');startGame(el.dataset.game)}));
+function toast(message){
+  const element = $('#toast');
+  element.textContent = message;
+  element.classList.add('show');
+  setTimeout(() => element.classList.remove('show'), 2300);
+}
 
-function activatePicker(game){$$('.game-picker button').forEach(b=>b.classList.toggle('active',b.dataset.game===game))}
-function startGame(game){currentGame=game;activatePicker(game);if(game==='quiz'){quizIndex=0;renderQuiz()}if(game==='order'){orderIndex=0;selectedWords=[];renderOrder()}if(game==='match'){matchSelected=[];renderMatch()}if(game==='speak')renderSpeak()}
+function speak(text, rate=.78){
+  if(!('speechSynthesis' in window)){ toast('Este navegador no ofrece audio de voz.'); return; }
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = rate;
+  speechSynthesis.speak(utterance);
+}
 
-function renderQuiz(){
-  quizAnswered=false;const item=vocabulary[quizIndex%vocabulary.length];const options=shuffle([item.es,...shuffle(vocabulary.filter(v=>v!==item)).slice(0,3).map(v=>v.es)]);
-  $('#game-area').innerHTML=`<div class="game-card"><span class="game-label">TRADUCE AL ESPAÑOL</span><h2>${item.en}</h2><div class="answers">${options.map(o=>`<button data-answer="${o}">${o}</button>`).join('')}</div><div class="game-footer"><span class="game-progress">Pregunta ${quizIndex+1} de 10</span><span class="feedback" id="feedback">Elige una respuesta</span></div></div>`;
-  $$('#game-area [data-answer]').forEach(btn=>btn.addEventListener('click',()=>{if(quizAnswered)return;quizAnswered=true;const ok=btn.dataset.answer===item.es;btn.classList.add(ok?'correct':'wrong');if(ok){gainXp(10);$('#feedback').textContent='¡Correcto! +10 XP';$('#feedback').className='feedback good'}else{state.hearts=Math.max(0,state.hearts-1);save();$('#feedback').textContent=`Respuesta: ${item.es}`;$('#feedback').className='feedback bad';$$('#game-area [data-answer]').find(b=>b.dataset.answer===item.es).classList.add('correct')}setTimeout(()=>{quizIndex++;quizIndex<10?renderQuiz():renderComplete()},1100)}));
+function renderNumberGrid(){
+  $('#number-grid').innerHTML = numbers.map(([digit,word]) => `<button data-say="${word}"><strong>${digit}</strong><span>${word}</span><small>🔊 escuchar</small></button>`).join('');
 }
-function renderOrder(){
-  const item=orderSentences[orderIndex%orderSentences.length];const bank=shuffle(item.words.map((word,i)=>({word,id:i+word})));
-  $('#game-area').innerHTML=`<div class="game-card"><span class="game-label">ORDENA LA FRASE</span><h2>${item.translation}</h2><div class="token-zone" id="token-zone"><span class="game-progress">Toca las palabras en el orden correcto</span></div><div class="token-bank">${bank.map(t=>`<button class="word-token" data-word="${t.word}" data-id="${t.id}">${t.word}</button>`).join('')}</div><div class="game-footer"><button class="next-button" id="check-order">Comprobar</button><span class="feedback" id="feedback"></span></div></div>`;
-  $$('.word-token').forEach(btn=>btn.addEventListener('click',()=>{if(btn.classList.contains('selected'))return;btn.classList.add('selected');selectedWords.push(btn.dataset.word);$('#token-zone').innerHTML=selectedWords.map(w=>`<span class="word-token selected">${w}</span>`).join('')}));
-  $('#check-order').addEventListener('click',()=>{const ok=selectedWords.join(' ')===item.words.join(' ');if(ok){gainXp(15);$('#feedback').textContent='¡Perfecto! +15 XP';$('#feedback').className='feedback good';speak(item.words.join(' '));setTimeout(()=>{orderIndex++;selectedWords=[];orderIndex<5?renderOrder():renderComplete()},1300)}else{$('#feedback').textContent='Inténtalo otra vez';$('#feedback').className='feedback bad';selectedWords=[];setTimeout(renderOrder,700)}})
-}
-function renderMatch(){
-  const pairs=shuffle(vocabulary).slice(0,4);const cards=shuffle(pairs.flatMap((p,i)=>[{text:p.en,pair:i},{text:p.es,pair:i}]));
-  $('#game-area').innerHTML=`<div class="game-card"><span class="game-label">ENCUENTRA LAS PAREJAS</span><h2>Inglés + español</h2><div class="match-grid">${cards.map((c,i)=>`<button class="match-card" data-pair="${c.pair}" data-index="${i}">${c.text}</button>`).join('')}</div><div class="game-footer"><span class="game-progress">Une cada palabra con su significado</span><span class="feedback" id="feedback"></span></div></div>`;
-  $$('.match-card').forEach(card=>card.addEventListener('click',()=>{if(card.classList.contains('matched')||matchSelected.includes(card))return;card.classList.add('selected');matchSelected.push(card);if(matchSelected.length===2){const [a,b]=matchSelected;if(a.dataset.pair===b.dataset.pair){a.classList.add('matched');b.classList.add('matched');gainXp(10);$('#feedback').textContent='¡Pareja! +10 XP';$('#feedback').className='feedback good';if($$('.match-card:not(.matched)').length===0)setTimeout(renderComplete,700)}else{$('#feedback').textContent='No coinciden';$('#feedback').className='feedback bad';setTimeout(()=>{a.classList.remove('selected');b.classList.remove('selected')},500)}matchSelected=[]}}));
-}
-function renderSpeak(){
-  const phrase='Hello, my name is Alex.';
-  $('#game-area').innerHTML=`<div class="game-card"><span class="game-label">PRONUNCIACIÓN</span><h2>${phrase}</h2><button class="big-audio" id="listen-phrase" aria-label="Escuchar frase">🔊</button><div class="speak-box"><p>1. Escucha dos veces.<br>2. Imita el ritmo, no cada letra.<br>3. Pulsa el micrófono y di la frase.</p></div><button class="mic-button" id="mic-button">● Empezar a hablar</button><button class="manual-complete" id="manual-speak">✓ Ya practiqué sin micrófono</button><p class="manual-note">La transcripción comprueba palabras, no califica tu acento. Si el micrófono falla, escucha, repite dos veces y usa el botón manual.</p><div class="game-footer"><span class="game-progress">El reconocimiento depende de tu navegador</span><span class="feedback" id="feedback"></span></div></div>`;
-  $('#listen-phrase').addEventListener('click',()=>speak(phrase,.72));
-  const completePronunciation=message=>{if(!state.moduleOneComplete){state.moduleOneComplete=true;state.progress=100;state.xp+=20;save()}$('#feedback').textContent=message;$('#feedback').className='feedback good';setTimeout(renderComplete,900)};
-  $('#manual-speak').addEventListener('click',()=>completePronunciation('Práctica registrada · Módulo 1 completado'));
-  $('#mic-button').addEventListener('click',()=>{const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition){$('#feedback').textContent='Este navegador no ofrece reconocimiento. Escucha y usa “Ya practiqué sin micrófono”.';return}const recognition=new Recognition();recognition.lang='en-US';recognition.interimResults=false;$('#feedback').textContent='Escuchando…';recognition.start();recognition.onresult=e=>{const heard=e.results[0][0].transcript;const normalize=s=>s.toLowerCase().replace(/[^a-z ]/g,'').trim();const ok=normalize(heard).includes('hello')&&normalize(heard).includes('my name is');if(ok){completePronunciation(`Escuché: “${heard}” · Módulo 1 completado`)}else{$('#feedback').textContent=`Escuché: “${heard}”. Escucha e inténtalo otra vez.`;$('#feedback').className='feedback bad'}};recognition.onerror=e=>{$('#feedback').textContent=e.error==='not-allowed'?'El micrófono está bloqueado. Permítelo o usa la práctica manual.':'No pude escuchar. Usa la práctica manual o inténtalo en Chrome.';$('#feedback').className='feedback bad'}})
-}
-function renderComplete(){$('#game-area').innerHTML=`<div class="game-card"><span class="game-label">SESIÓN COMPLETADA</span><h2>¡Buen trabajo! 🎉</h2><p class="lead">Hoy entrenaste recuperación activa, comprensión y producción. Mañana, repite antes de avanzar.</p><button class="primary" id="again">Practicar otra vez</button></div>`;$('#again').addEventListener('click',()=>startGame(currentGame))}
 
-renderStats();startGame('quiz');
+function activatePicker(game){
+  $$('.game-picker button').forEach(button => button.classList.toggle('active', button.dataset.game === game));
+}
+
+function startGame(game){
+  currentGame = game;
+  activatePicker(game);
+  gameIndex = 0;
+  answered = false;
+  selectedWords = [];
+  if(game === 'numbers'){
+    queue = shuffle(numbers.slice(0,21)).slice(0,10).map(([digit,word]) => ({digit,word}));
+    renderNumberQuestion();
+  }
+  if(game === 'tobe'){
+    queue = shuffle(toBeQuestions);
+    renderToBeQuestion();
+  }
+  if(game === 'order'){
+    queue = [...orderSentences];
+    renderOrderQuestion();
+  }
+  if(game === 'xiaoma') renderXiaoma();
+  if(game === 'review'){
+    queue = shuffle(previousVocabulary);
+    renderReviewQuestion();
+  }
+}
+
+function answerButtons(options){
+  return `<div class="answers">${options.map(option => `<button data-answer="${option}">${option}</button>`).join('')}</div>`;
+}
+
+function handleChoice(correct, explanation, next){
+  $$('#game-area [data-answer]').forEach(button => button.addEventListener('click', () => {
+    if(answered) return;
+    answered = true;
+    const ok = button.dataset.answer === correct;
+    button.classList.add(ok ? 'correct' : 'wrong');
+    if(ok){
+      $('#feedback').textContent = '¡Correcto!';
+      $('#feedback').className = 'feedback good';
+    }else{
+      state.hearts = Math.max(0,state.hearts-1);
+      save();
+      const right = $$('#game-area [data-answer]').find(candidate => candidate.dataset.answer === correct);
+      if(right) right.classList.add('correct');
+      $('#feedback').textContent = `${explanation}`;
+      $('#feedback').className = 'feedback bad';
+    }
+    setTimeout(next, ok ? 750 : 1500);
+  }));
+}
+
+function renderNumberQuestion(){
+  const item = queue[gameIndex];
+  const distractors = shuffle(numbers.filter(number => number[0] !== item.digit)).slice(0,3).map(number => number[0]);
+  const options = shuffle([item.digit,...distractors]);
+  $('#game-area').innerHTML = `<div class="game-card"><span class="game-label">NÚMEROS 0–20</span><h2>${item.word}</h2><button class="listen-inline" data-say="${item.word}">🔊 Escuchar</button>${answerButtons(options)}<div class="game-footer"><span class="game-progress">${gameIndex+1} de ${queue.length}</span><span class="feedback" id="feedback">Elige el número</span></div></div>`;
+  answered = false;
+  handleChoice(item.digit, `${item.word} = ${item.digit}`, () => {
+    gameIndex++;
+    if(gameIndex < queue.length) renderNumberQuestion(); else renderComplete('numbers','Números entrenados');
+  });
+}
+
+function renderToBeQuestion(){
+  const item = queue[gameIndex];
+  $('#game-area').innerHTML = `<div class="game-card"><span class="game-label">ELIGE AM, IS O ARE</span><h2>${item.sentence}</h2>${answerButtons(shuffle(['am','is','are']))}<div class="game-footer"><span class="game-progress">${gameIndex+1} de ${queue.length}</span><span class="feedback" id="feedback">Piensa primero en el sujeto</span></div></div>`;
+  answered = false;
+  handleChoice(item.answer, item.explanation, () => {
+    gameIndex++;
+    if(gameIndex < queue.length) renderToBeQuestion(); else renderComplete('tobe','Verbo to be entrenado');
+  });
+}
+
+function renderOrderQuestion(){
+  const item = queue[gameIndex];
+  const bank = shuffle(item.words.map((word,index) => ({word,id:`${index}-${word}`})));
+  $('#game-area').innerHTML = `<div class="game-card"><span class="game-label">CONSTRUYE SIN COPIAR</span><h2>${item.translation}</h2><div class="token-zone" id="token-zone"><span class="game-progress">Toca las palabras en orden</span></div><div class="token-bank">${bank.map(token => `<button class="word-token" data-word="${token.word}" data-id="${token.id}">${token.word}</button>`).join('')}</div><div class="game-footer"><button class="next-button" id="check-order">Comprobar</button><span class="feedback" id="feedback"></span></div></div>`;
+  selectedWords = [];
+  $$('.word-token').forEach(button => button.addEventListener('click', () => {
+    if(button.classList.contains('selected')) return;
+    button.classList.add('selected');
+    selectedWords.push(button.dataset.word);
+    $('#token-zone').innerHTML = selectedWords.map(word => `<span class="word-token selected">${word}</span>`).join('');
+  }));
+  $('#check-order').addEventListener('click', () => {
+    const ok = selectedWords.join(' ') === item.words.join(' ');
+    if(ok){
+      $('#feedback').textContent = '¡Correcto!';
+      $('#feedback').className = 'feedback good';
+      speak(item.words.join(' '));
+      setTimeout(() => {
+        gameIndex++;
+        if(gameIndex < queue.length) renderOrderQuestion(); else renderComplete('order','Construcción entrenada');
+      },1100);
+    }else{
+      $('#feedback').textContent = 'Todavía no. Vuelve a ordenar.';
+      $('#feedback').className = 'feedback bad';
+      state.hearts = Math.max(0,state.hearts-1);
+      save();
+      setTimeout(renderOrderQuestion,900);
+    }
+  });
+}
+
+function renderXiaoma(){
+  $('#game-area').innerHTML = `<div class="game-card xiaoma-mission"><span class="game-label">MODO XIAOMA · CON BASE</span><h2>Misión: 90 segundos sobre ti</h2><p>No memorices sonidos vacíos. Primero entiende cada estructura; luego úsala con tus datos.</p><div class="mission-rounds"><label><input type="checkbox" data-round> <span><b>Ronda 1 · Con apoyo</b>Lee: “I am Alonso. I am twenty-one years old. I am from Peru.”</span></label><label><input type="checkbox" data-round> <span><b>Ronda 2 · Con palabras clave</b>Mira solo: name · age · country. Forma las frases tú.</span></label><label><input type="checkbox" data-round> <span><b>Ronda 3 · Sin mirar</b>Dilo sin texto y responde: “Are you twenty-one years old?”</span></label></div><div class="repair-kit"><b>Kit para no bloquearte</b><button data-say="Could you repeat that, please?">🔊 Could you repeat that, please?</button><button data-say="Please speak more slowly.">🔊 Please speak more slowly.</button><button data-say="I do not understand yet.">🔊 I don’t understand yet.</button></div><button class="primary" id="finish-xiaoma" disabled>Registrar misión</button><p class="manual-note" id="xiaoma-note">Marca las tres rondas cuando realmente las hagas.</p></div>`;
+  const rounds = $$('[data-round]');
+  const finish = $('#finish-xiaoma');
+  rounds.forEach(round => round.addEventListener('change', () => { finish.disabled = !rounds.every(item => item.checked); }));
+  finish.addEventListener('click', () => {
+    completeStage('xiaoma',30);
+    renderComplete('xiaoma','Misión Xiaoma registrada');
+  });
+}
+
+function renderReviewQuestion(){
+  const item = queue[gameIndex];
+  const options = shuffle([item.es,...shuffle(previousVocabulary.filter(word => word.en !== item.en)).slice(0,3).map(word => word.es)]);
+  $('#game-area').innerHTML = `<div class="game-card"><span class="game-label">REPASO DE LA LECCIÓN ANTERIOR</span><h2>${item.en}</h2>${answerButtons(options)}<div class="game-footer"><span class="game-progress">${gameIndex+1} de ${queue.length}</span><span class="feedback" id="feedback">Elige la traducción</span></div></div>`;
+  answered = false;
+  handleChoice(item.es, `${item.en} = ${item.es}`, () => {
+    gameIndex++;
+    if(gameIndex < queue.length) renderReviewQuestion(); else renderComplete(null,'Repaso terminado');
+  });
+}
+
+function renderComplete(stage,label){
+  if(stage && stage !== 'xiaoma') completeStage(stage,20);
+  const progress = foundationProgress();
+  const next = stage === 'numbers' ? 'tobe' : stage === 'tobe' ? 'order' : stage === 'order' ? 'xiaoma' : 'numbers';
+  const allDone = progress === 100;
+  $('#game-area').innerHTML = `<div class="game-card"><span class="game-label">${allDone ? 'BASE 0 COMPLETADA' : 'ACTIVIDAD COMPLETADA'}</span><h2>${label} ${allDone ? '🎉' : '✓'}</h2><p class="lead">${allDone ? 'Terminaste la primera base. Ahora practica conmigo para comprobar que puedes responder sin pistas.' : `Progreso de la Base 0: ${progress}%. Continúa con el siguiente bloque.`}</p><button class="primary" id="next-activity">${allDone ? 'Volver al inicio' : 'Siguiente actividad'}</button></div>`;
+  $('#next-activity').addEventListener('click', () => allDone ? showView('inicio') : startGame(next));
+}
+
+document.addEventListener('click', event => {
+  const speech = event.target.closest('[data-say]');
+  if(speech) speak(speech.dataset.say);
+});
+
+$$('[data-view]').forEach(element => element.addEventListener('click', event => {
+  event.preventDefault();
+  showView(element.dataset.view);
+}));
+
+$$('[data-start-foundation]').forEach(element => element.addEventListener('click', () => showView('leccion')));
+$$('[data-game]').forEach(element => element.addEventListener('click', () => {
+  showView('practica');
+  startGame(element.dataset.game);
+}));
+
+$('#mobile-menu').addEventListener('click', () => $('.sidebar').classList.toggle('open'));
+$('#finish-lesson').addEventListener('click', () => {
+  completeStage('lesson',20);
+  showView('practica');
+  startGame('numbers');
+  toast('Explicación completada · ahora demuestra lo aprendido');
+});
+
+$$('[data-copy]').forEach(element => element.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(element.dataset.copy); toast('Mensaje copiado · pégalo en ChatGPT'); }
+  catch (_) { toast('Selecciona y copia el mensaje manualmente.'); }
+}));
+
+renderNumberGrid();
+renderStats();
+startGame('numbers');
