@@ -43,6 +43,26 @@ let queue = [];
 let gameIndex = 0;
 let answered = false;
 let selectedWords = [];
+let activeAudio = null;
+
+const prerecordedAudio = {
+  'zero':'audio/number-00.wav','one':'audio/number-01.wav','two':'audio/number-02.wav','three':'audio/number-03.wav',
+  'four':'audio/number-04.wav','five':'audio/number-05.wav','six':'audio/number-06.wav','seven':'audio/number-07.wav',
+  'eight':'audio/number-08.wav','nine':'audio/number-09.wav','ten':'audio/number-10.wav','eleven':'audio/number-11.wav',
+  'twelve':'audio/number-12.wav','thirteen':'audio/number-13.wav','fourteen':'audio/number-14.wav','fifteen':'audio/number-15.wav',
+  'sixteen':'audio/number-16.wav','seventeen':'audio/number-17.wav','eighteen':'audio/number-18.wav','nineteen':'audio/number-19.wav',
+  'twenty':'audio/number-20.wav','twenty-one':'audio/number-21.wav',
+  'I':'audio/pronoun-i.wav','you':'audio/pronoun-you.wav','he':'audio/pronoun-he.wav','she':'audio/pronoun-she.wav',
+  'it':'audio/pronoun-it.wav','we':'audio/pronoun-we.wav','they':'audio/pronoun-they.wav',
+  'I am Alonso.':'audio/i-am-alonso.wav','You are my friend.':'audio/you-are-my-friend.wav',
+  'She is from Peru.':'audio/she-is-from-peru.wav','Hi! I am Maya. What is your name?':'audio/dialogue-maya.wav',
+  'I am Alonso. I am from Peru.':'audio/dialogue-alonso.wav','Are you twenty-one years old?':'audio/are-you-21.wav',
+  'Yes, I am.':'audio/yes-i-am.wav','I am twenty-one years old.':'audio/i-am-21.wav',
+  'Are you a student?':'audio/are-you-a-student.wav','I am not tired.':'audio/i-am-not-tired.wav',
+  'They are my friends.':'audio/they-are-my-friends.wav','Could you repeat that, please?':'audio/repeat-that.wav',
+  'Please speak more slowly.':'audio/speak-slowly.wav','I do not understand yet.':'audio/not-understand-yet.wav',
+  'I. I am Alonso. You are my friend.':'audio/voice-test.wav'
+};
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -97,11 +117,24 @@ function toast(message){
 }
 
 function speak(text, rate=.78){
-  if(!('speechSynthesis' in window)){ toast('Este navegador no ofrece audio de voz.'); return; }
+  const source = prerecordedAudio[text];
+  if(source){
+    if(activeAudio){ activeAudio.pause(); activeAudio.currentTime = 0; }
+    activeAudio = new Audio(source);
+    activeAudio.playbackRate = rate < .75 ? .9 : 1;
+    activeAudio.play().catch(() => toast('No pude reproducir el audio. Pulsa otra vez.'));
+    return;
+  }
+  if(!('speechSynthesis' in window)){ toast('No hay audio inglés disponible para esta frase.'); return; }
+  const voice = speechSynthesis.getVoices().find(item => /^en-US$/i.test(item.lang || '')) ||
+    speechSynthesis.getVoices().find(item => /^en([-_]|$)/i.test(item.lang || ''));
+  if(!voice){ toast('Audio bloqueado: no existe una voz inglesa para esta frase.'); return; }
   speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
+  utterance.voice = voice;
+  utterance.lang = voice.lang || 'en-US';
   utterance.rate = rate;
+  utterance.pitch = 1;
   speechSynthesis.speak(utterance);
 }
 
@@ -264,6 +297,7 @@ $$('[data-game]').forEach(element => element.addEventListener('click', () => {
 }));
 
 $('#mobile-menu').addEventListener('click', () => $('.sidebar').classList.toggle('open'));
+$('#test-voice').addEventListener('click', () => speak('I. I am Alonso. You are my friend.',.7));
 $('#finish-lesson').addEventListener('click', () => {
   completeStage('lesson',20);
   showView('practica');
